@@ -193,3 +193,34 @@ button.ghost {
 }
 
 \n
+
+.admin-link {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.admin-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--navy);
+  color: white;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.admin-note {
+  color: var(--ash);
+  font-size: 0.85rem;
+}
+
+.hidden {
+  display: none !important;
+}
+

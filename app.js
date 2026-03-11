@@ -7,6 +7,18 @@ const baseData = {
 
 };
 const numberFmt = new Intl.NumberFormat('ko-KR');
+const DATA_SOURCE = document.body?.dataset.source || 'data.json';
+const SHEET_URL = document.body?.dataset.sheetUrl || '';
+const sheetLink = document.getElementById('sheetLink');
+const adminLink = document.querySelector('.admin-link');
+
+if (sheetLink) {
+  if (SHEET_URL && !SHEET_URL.includes('REPLACE_ME')) {
+    sheetLink.href = SHEET_URL;
+  } else if (adminLink) {
+    adminLink.classList.add('hidden');
+  }
+}
 
 function parseNumber(value) {
   if (value === null || value === undefined) return 0;
@@ -82,10 +94,10 @@ function buildChart(ctx, label, series, valueKey = 'value', type = 'line') {
 
 async function loadData() {
   try {
-    const res = await fetch('data.json', { cache: 'no-store' });
+    const res = await fetch(DATA_SOURCE, { cache: 'no-store' });
     if (res.ok) return await res.json();
   } catch (err) {
-    console.warn('data.json load failed, using embedded data.', err);
+    console.warn('data source load failed, using embedded data.', err);
   }
   return baseData;
 }
@@ -103,8 +115,11 @@ function renderNews(news) {
   if (summary && news.summary) summary.textContent = news.summary;
   if (link && news.url) link.href = news.url;
   if (status && news.status) status.textContent = news.status;
-}\nasync function init() {
-  const data = await loadData();\n  renderNews(data.news);
+}
+
+async function init() {
+  const data = await loadData();
+  renderNews(data.news);
 
   const investorSeries = (data.investor || []).map((d) => ({
     date: toYmd(d.date),
@@ -137,5 +152,7 @@ if (newsBtn) {
     window.open(`https://search.naver.com/search.naver?where=news&query=${query}`, '_blank');
   });
 }
+
+
 
 
