@@ -222,7 +222,7 @@ if (newsBtn) {
 
 
 
-const ADMIN_PASSWORD = '1234';
+const ADMIN_PASSWORD = 'smbcsmbc';
 const adminStatus = document.getElementById('adminStatus');
 const adminPass = document.getElementById('adminPass');
 const adminUnlockBtn = document.getElementById('adminUnlockBtn');
