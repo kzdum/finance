@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Google Apps Script for Finance Dashboard
  * Expected sheets:
  * - investor: date, value
@@ -6,8 +6,10 @@
  * - overseas: date, buy, sell
  * - news: title, meta, summary, url, status, updatedAt
  */
+const SHEET_ID = '124HFW7ADWz8-UqaN9as1RTqS4A1_2jjba-CFZQ8U5NQ';
+
 function doGet() {
-  const ss = SpreadsheetApp.getActive();
+  const ss = SpreadsheetApp.openById(SHEET_ID);
   const data = {
     investor: readSeries(ss, 'investor', ['date', 'value']),
     credit: readSeries(ss, 'credit', ['date', 'value']),
@@ -54,5 +56,3 @@ function readNews(ss) {
     updatedAt: get('updatedat')
   };
 }
-
-
