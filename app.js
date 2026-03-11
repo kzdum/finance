@@ -61,7 +61,7 @@ function upsertByDate(series, entry) {
   return series.sort(sortByDateAsc);
 }
 
-function buildLineChart(ctx, label, series, valueKey = 'value') {
+function buildChart(ctx, label, series, valueKey = 'value') {
   if (!ctx || !window.Chart) return null;
   const labels = series.map((d) => d.date);
   const data = series.map((d) => parseNumber(d[valueKey]));
@@ -127,14 +127,9 @@ investorSeries.sort(sortByDateAsc);
 creditSeries.sort(sortByDateAsc);
 overseasSeries.sort(sortByDateAsc);
 
-const investChart = buildLineChart(document.getElementById('investChart'), '투자자예탁금', investorSeries);
-const creditChart = buildLineChart(document.getElementById('creditChart'), '신용거래융자 잔고', creditSeries);
-const overseasChart = buildLineChart(
-  document.getElementById('overseasChart'),
-  '해외주식 순매수',
-  overseasSeries,
-  'net'
-);
+const investChart = buildChart(document.getElementById('investChart'), '투자자예탁금', investorSeries);
+const creditChart = buildChart(document.getElementById('creditChart'), '신용거래융자 잔고', creditSeries);
+const overseasChart = buildChart(document.getElementById('overseasChart'), '해외주식 순매수', overseasSeries, 'net', 'bar');
 
 function refreshChart(chart, series, key = 'value') {
   if (!chart) return;
@@ -218,3 +213,5 @@ if (newsBtn) {
     window.open(`https://search.naver.com/search.naver?where=news&query=${query}`, '_blank');
   });
 }
+
+
