@@ -35,32 +35,6 @@ function sortByDateAsc(a, b) {
   return parseDate(a.date) - parseDate(b.date);
 }
 
-function loadSeries(key, fallback) {
-  const raw = localStorage.getItem(key);
-  if (!raw) return fallback;
-  try {
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) return parsed;
-  } catch (err) {
-    console.warn('Failed to parse local series', err);
-  }
-  return fallback;
-}
-
-function saveSeries(key, series) {
-  localStorage.setItem(key, JSON.stringify(series));
-}
-
-function upsertByDate(series, entry) {
-  const idx = series.findIndex((item) => item.date === entry.date);
-  if (idx >= 0) {
-    series[idx] = entry;
-  } else {
-    series.push(entry);
-  }
-  return series.sort(sortByDateAsc);
-}
-
 function buildChart(ctx, label, series, valueKey = 'value', type = 'line') {
   if (!ctx || !window.Chart) return null;
   const labels = series.map((d) => d.date);
@@ -106,109 +80,42 @@ function buildChart(ctx, label, series, valueKey = 'value', type = 'line') {
   });
 }
 
-const investorKey = 'series_investor';
-const creditKey = 'series_credit';
-const overseasKey = 'series_overseas';
-
-let investorSeries = loadSeries(investorKey, baseData.investor).map((d) => ({
-  date: toYmd(d.date),
-  value: d.value
-}));
-let creditSeries = loadSeries(creditKey, baseData.credit).map((d) => ({
-  date: toYmd(d.date),
-  value: d.value
-}));
-let overseasSeries = loadSeries(overseasKey, baseData.overseas).map((d) => ({
-  date: toYmd(d.date),
-  buy: d.buy,
-  sell: d.sell,
-  net: computeNet(d.buy, d.sell)
-}));
-
-investorSeries.sort(sortByDateAsc);
-creditSeries.sort(sortByDateAsc);
-overseasSeries.sort(sortByDateAsc);
-
-const investChart = buildChart(document.getElementById('investChart'), '투자자예탁금', investorSeries);
-const creditChart = buildChart(document.getElementById('creditChart'), '신용거래융자 잔고', creditSeries);
-const overseasChart = buildChart(document.getElementById('overseasChart'), '해외주식 순매수', overseasSeries, 'net', 'bar');
-
-function refreshChart(chart, series, key = 'value') {
-  if (!chart) return;
-  chart.data.labels = series.map((d) => d.date);
-  chart.data.datasets[0].data = series.map((d) => parseNumber(d[key]));
-  chart.update();
+async function loadData() {
+  try {
+    const res = await fetch('data.json', { cache: 'no-store' });
+    if (res.ok) return await res.json();
+  } catch (err) {
+    console.warn('data.json load failed, using embedded data.', err);
+  }
+  return baseData;
 }
 
-function bindForm(seriesKey, chart, series, valueKey) {
-  const form = document.querySelector(`form[data-series="${seriesKey}"]`);
-  if (!form) return;
-  form.addEventListener('submit', (event) => {
-    if (!requireAuth()) return;
-    event.preventDefault();
-    const dateInput = form.querySelector('input[type="date"]');
-    const date = toYmd(dateInput.value);
-    if (!date) return;
+async function init() {
+  const data = await loadData();
 
-    if (seriesKey === 'overseas') {
-      const buy = form.querySelector('#overseasBuy').value;
-      const sell = form.querySelector('#overseasSell').value;
-      if (buy === '' || sell === '') return;
-      const entry = {
-        date,
-        buy,
-        sell,
-        net: computeNet(buy, sell)
-      };
-      overseasSeries = upsertByDate(series, entry);
-      saveSeries(overseasKey, overseasSeries);
-      refreshChart(chart, overseasSeries, 'net');
-      form.reset();
-      return;
-    }
+  const investorSeries = (data.investor || []).map((d) => ({
+    date: toYmd(d.date),
+    value: d.value
+  })).sort(sortByDateAsc);
 
-    const valueInput = form.querySelector('input[type="number"]');
-    const entry = { date, value: valueInput.value };
-    const updated = upsertByDate(series, entry);
-    if (seriesKey === 'investor') {
-      investorSeries = updated;
-      saveSeries(investorKey, investorSeries);
-      refreshChart(chart, investorSeries, valueKey);
-    } else if (seriesKey === 'credit') {
-      creditSeries = updated;
-      saveSeries(creditKey, creditSeries);
-      refreshChart(chart, creditSeries, valueKey);
-    }
-    form.reset();
-  });
+  const creditSeries = (data.credit || []).map((d) => ({
+    date: toYmd(d.date),
+    value: d.value
+  })).sort(sortByDateAsc);
+
+  const overseasSeries = (data.overseas || []).map((d) => ({
+    date: toYmd(d.date),
+    buy: d.buy,
+    sell: d.sell,
+    net: computeNet(d.buy, d.sell)
+  })).sort(sortByDateAsc);
+
+  buildChart(document.getElementById('investChart'), '투자자예탁금', investorSeries);
+  buildChart(document.getElementById('creditChart'), '신용거래융자 잔고', creditSeries);
+  buildChart(document.getElementById('overseasChart'), '해외주식 순매수', overseasSeries, 'net', 'bar');
 }
 
-bindForm('investor', investChart, investorSeries, 'value');
-bindForm('credit', creditChart, creditSeries, 'value');
-bindForm('overseas', overseasChart, overseasSeries, 'net');
-
-function bindReset(seriesKey, base, storageKey, chart, keyField) {
-  const button = document.querySelector(`button[data-reset="${seriesKey}"]`);
-  if (!button) return;
-  button.addEventListener('click', () => {
-    if (!requireAuth()) return;
-    localStorage.removeItem(storageKey);
-    const fresh = base.map((d) => ({
-      ...d,
-      date: toYmd(d.date),
-      net: d.buy ? computeNet(d.buy, d.sell) : d.net
-    }));
-    fresh.sort(sortByDateAsc);
-    refreshChart(chart, fresh, keyField);
-    if (seriesKey === 'investor') investorSeries = fresh;
-    if (seriesKey === 'credit') creditSeries = fresh;
-    if (seriesKey === 'overseas') overseasSeries = fresh;
-  });
-}
-
-bindReset('investor', baseData.investor, investorKey, investChart, 'value');
-bindReset('credit', baseData.credit, creditKey, creditChart, 'value');
-bindReset('overseas', baseData.overseas, overseasKey, overseasChart, 'net');
+init();
 
 const newsBtn = document.getElementById('newsUpdateBtn');
 if (newsBtn) {
@@ -217,55 +124,4 @@ if (newsBtn) {
     window.open(`https://search.naver.com/search.naver?where=news&query=${query}`, '_blank');
   });
 }
-
-
-
-
-
-const ADMIN_PASSWORD = 'smbcsmbc';
-const adminStatus = document.getElementById('adminStatus');
-const adminPass = document.getElementById('adminPass');
-const adminUnlockBtn = document.getElementById('adminUnlockBtn');
-
-function setAdminStatus(unlocked) {
-  if (!adminStatus) return;
-  adminStatus.textContent = unlocked ? '인증됨' : '잠김';
-  adminStatus.classList.toggle('unlocked', unlocked);
-}
-
-function isAuthorized() {
-  return sessionStorage.getItem('admin_unlocked') === 'true';
-}
-
-function authorizeWithPassword(value) {
-  if (value && value === ADMIN_PASSWORD) {
-    sessionStorage.setItem('admin_unlocked', 'true');
-    setAdminStatus(true);
-    if (adminPass) adminPass.value = '';
-    return true;
-  }
-  return false;
-}
-
-function requireAuth() {
-  if (isAuthorized()) return true;
-  if (adminPass && authorizeWithPassword(adminPass.value.trim())) return true;
-  const promptValue = window.prompt('관리자 비밀번호를 입력하세요');
-  if (authorizeWithPassword(promptValue ? promptValue.trim() : '')) return true;
-  alert('비밀번호가 일치하지 않습니다.');
-  return false;
-}
-
-if (adminUnlockBtn) {
-  adminUnlockBtn.addEventListener('click', () => {
-    if (!authorizeWithPassword(adminPass ? adminPass.value.trim() : '')) {
-      alert('비밀번호가 일치하지 않습니다.');
-      setAdminStatus(false);
-    }
-  });
-}
-
-setAdminStatus(isAuthorized());
-
-
 
