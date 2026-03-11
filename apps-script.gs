@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Google Apps Script for Finance Dashboard
  * Expected sheets:
  * - investor: date, value
@@ -54,3 +54,4 @@ function readNews(ss) {
     updatedAt: get('updatedat')
   };
 }
+

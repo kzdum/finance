@@ -1,4 +1,4 @@
-# Google Sheets Template
+﻿# Google Sheets Template
 
 Create a Google Sheet with the following tabs and headers (row 1):
 
@@ -17,3 +17,4 @@ Create a Google Sheet with the following tabs and headers (row 1):
 Notes
 - date format: YYYY/MM/DD
 - values can be numbers or strings; the site will parse them.
+
