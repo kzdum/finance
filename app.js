@@ -61,13 +61,14 @@ function upsertByDate(series, entry) {
   return series.sort(sortByDateAsc);
 }
 
-function buildChart(ctx, label, series, valueKey = 'value') {
+function buildChart(ctx, label, series, valueKey = 'value', type = 'line') {
   if (!ctx || !window.Chart) return null;
   const labels = series.map((d) => d.date);
   const data = series.map((d) => parseNumber(d[valueKey]));
+  const isLine = type === 'line';
 
   return new Chart(ctx, {
-    type: 'line',
+    type,
     data: {
       labels,
       datasets: [
@@ -75,11 +76,12 @@ function buildChart(ctx, label, series, valueKey = 'value') {
           label,
           data,
           borderColor: '#0a1020',
-          backgroundColor: 'rgba(10, 16, 32, 0.12)',
-          tension: 0.3,
-          fill: true,
-          pointRadius: 2,
-          pointHoverRadius: 5
+          backgroundColor: isLine ? 'rgba(10, 16, 32, 0.12)' : 'rgba(35, 179, 159, 0.7)',
+          tension: isLine ? 0.3 : 0,
+          fill: isLine,
+          pointRadius: isLine ? 2 : 0,
+          pointHoverRadius: isLine ? 5 : 2,
+          borderWidth: isLine ? 2 : 0
         }
       ]
     },
@@ -142,6 +144,7 @@ function bindForm(seriesKey, chart, series, valueKey) {
   const form = document.querySelector(`form[data-series="${seriesKey}"]`);
   if (!form) return;
   form.addEventListener('submit', (event) => {
+    if (!requireAuth()) return;
     event.preventDefault();
     const dateInput = form.querySelector('input[type="date"]');
     const date = toYmd(dateInput.value);
@@ -188,6 +191,7 @@ function bindReset(seriesKey, base, storageKey, chart, keyField) {
   const button = document.querySelector(`button[data-reset="${seriesKey}"]`);
   if (!button) return;
   button.addEventListener('click', () => {
+    if (!requireAuth()) return;
     localStorage.removeItem(storageKey);
     const fresh = base.map((d) => ({
       ...d,
@@ -213,5 +217,55 @@ if (newsBtn) {
     window.open(`https://search.naver.com/search.naver?where=news&query=${query}`, '_blank');
   });
 }
+
+
+
+
+
+const ADMIN_PASSWORD = '1234';
+const adminStatus = document.getElementById('adminStatus');
+const adminPass = document.getElementById('adminPass');
+const adminUnlockBtn = document.getElementById('adminUnlockBtn');
+
+function setAdminStatus(unlocked) {
+  if (!adminStatus) return;
+  adminStatus.textContent = unlocked ? '인증됨' : '잠김';
+  adminStatus.classList.toggle('unlocked', unlocked);
+}
+
+function isAuthorized() {
+  return sessionStorage.getItem('admin_unlocked') === 'true';
+}
+
+function authorizeWithPassword(value) {
+  if (value && value === ADMIN_PASSWORD) {
+    sessionStorage.setItem('admin_unlocked', 'true');
+    setAdminStatus(true);
+    if (adminPass) adminPass.value = '';
+    return true;
+  }
+  return false;
+}
+
+function requireAuth() {
+  if (isAuthorized()) return true;
+  if (adminPass && authorizeWithPassword(adminPass.value.trim())) return true;
+  const promptValue = window.prompt('관리자 비밀번호를 입력하세요');
+  if (authorizeWithPassword(promptValue ? promptValue.trim() : '')) return true;
+  alert('비밀번호가 일치하지 않습니다.');
+  return false;
+}
+
+if (adminUnlockBtn) {
+  adminUnlockBtn.addEventListener('click', () => {
+    if (!authorizeWithPassword(adminPass ? adminPass.value.trim() : '')) {
+      alert('비밀번호가 일치하지 않습니다.');
+      setAdminStatus(false);
+    }
+  });
+}
+
+setAdminStatus(isAuthorized());
+
 
 
