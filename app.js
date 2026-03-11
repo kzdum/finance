@@ -1,4 +1,4 @@
-ï»¿const baseData = {
+const baseData = {
   investor: [{"date":"2026/03/10","value":"125,584,440"},{"date":"2026/03/09","value":"127,421,841"},{"date":"2026/03/06","value":"129,957,423"},{"date":"2026/03/05","value":"130,887,316"},{"date":"2026/03/04","value":"132,068,238"},{"date":"2026/03/03","value":"129,818,794"},{"date":"2026/02/27","value":"118,748,760"},{"date":"2026/02/26","value":"119,483,202"},{"date":"2026/02/25","value":"109,467,654"},{"date":"2026/02/24","value":"107,903,182"},{"date":"2026/02/23","value":"108,290,073"},{"date":"2026/02/20","value":"104,129,136"},{"date":"2026/02/19","value":"106,570,048"},{"date":"2026/02/13","value":"99,273,599"},{"date":"2026/02/12","value":"103,018,385"},{"date":"2026/02/11","value":"98,163,375"},{"date":"2026/02/10","value":"95,299,599"},{"date":"2026/02/09","value":"98,590,517"},{"date":"2026/02/06","value":"109,009,927"},{"date":"2026/02/05","value":"104,866,667"},{"date":"2026/02/04","value":"100,817,155"},{"date":"2026/02/03","value":"105,584,468"},{"date":"2026/02/02","value":"111,296,538"},{"date":"2026/01/30","value":"106,032,452"},{"date":"2026/01/29","value":"103,707,195"},{"date":"2026/01/28","value":"103,362,323"},{"date":"2026/01/27","value":"100,282,602"},{"date":"2026/01/26","value":"97,540,543"},{"date":"2026/01/23","value":"93,809,507"},{"date":"2026/01/22","value":"95,727,595"},{"date":"2026/01/21","value":"96,331,743"},{"date":"2026/01/20","value":"95,525,974"},{"date":"2026/01/19","value":"93,862,316"},{"date":"2026/01/16","value":"91,218,177"},{"date":"2026/01/15","value":"92,603,047"},{"date":"2026/01/14","value":"89,309,938"},{"date":"2026/01/13","value":"88,048,929"},{"date":"2026/01/12","value":"88,988,049"},{"date":"2026/01/09","value":"88,872,017"},{"date":"2026/01/08","value":"92,853,739"},{"date":"2026/01/07","value":"89,765,035"},{"date":"2026/01/06","value":"88,633,858"},{"date":"2026/01/05","value":"89,130,391"},{"date":"2026/01/02","value":"89,521,075"},{"date":"2025/12/31","value":"87,829,057"},{"date":"2025/12/30","value":"87,398,579"},{"date":"2025/12/29","value":"86,475,780"},{"date":"2025/12/26","value":"85,425,076"},{"date":"2025/12/24","value":"83,304,002"},{"date":"2025/12/23","value":"81,076,938"},{"date":"2025/12/22","value":"81,719,604"},{"date":"2025/12/19","value":"81,034,422"},{"date":"2025/12/18","value":"81,710,726"},{"date":"2025/12/17","value":"83,526,293"},{"date":"2025/12/16","value":"84,352,786"},{"date":"2025/12/15","value":"82,864,679"},{"date":"2025/12/12","value":"83,941,863"},{"date":"2025/12/11","value":"81,641,531"},{"date":"2025/12/10","value":"80,566,459"}]
 ,
   credit: [{"date":"2026/03/10","value":"31803317"},{"date":"2026/03/09","value":"31690508"},{"date":"2026/03/06","value":"32789896"},{"date":"2026/03/05","value":"33694521"},{"date":"2026/03/04","value":"33197791"},{"date":"2026/03/03","value":"32804073"},{"date":"2026/02/27","value":"32668983"},{"date":"2026/02/26","value":"32368488"},{"date":"2026/02/25","value":"32134040"},{"date":"2026/02/24","value":"31960208"},{"date":"2026/02/23","value":"31712325"},{"date":"2026/02/20","value":"31638448"},{"date":"2026/02/19","value":"31593229"},{"date":"2026/02/13","value":"31476674"},{"date":"2026/02/12","value":"31466410"},{"date":"2026/02/11","value":"31318010"},{"date":"2026/02/10","value":"31560720"},{"date":"2026/02/09","value":"31607698"},{"date":"2026/02/06","value":"31099495"},{"date":"2026/02/05","value":"30786792"},{"date":"2026/02/04","value":"30935180"},{"date":"2026/02/03","value":"30539766"},{"date":"2026/02/02","value":"30473064"},{"date":"2026/01/30","value":"30277851"},{"date":"2026/01/29","value":"30092487"},{"date":"2026/01/28","value":"29596166"},{"date":"2026/01/27","value":"29244996"},{"date":"2026/01/26","value":"29346682"},{"date":"2026/01/23","value":"29055410"},{"date":"2026/01/22","value":"28925745"},{"date":"2026/01/21","value":"29082114"},{"date":"2026/01/20","value":"29058554"},{"date":"2026/01/19","value":"28995014"},{"date":"2026/01/16","value":"28933786"},{"date":"2026/01/15","value":"28745580"},{"date":"2026/01/14","value":"28599293"},{"date":"2026/01/13","value":"28657441"},{"date":"2026/01/12","value":"28522408"},{"date":"2026/01/09","value":"28349745"},{"date":"2026/01/08","value":"28190294"},{"date":"2026/01/07","value":"27870759"},{"date":"2026/01/06","value":"27796261"},{"date":"2026/01/05","value":"27622356"},{"date":"2026/01/02","value":"27420700"},{"date":"2025/12/31","value":"27286469"},{"date":"2025/12/30","value":"27299548"},{"date":"2025/12/29","value":"27294510"},{"date":"2025/12/26","value":"27247572"},{"date":"2025/12/24","value":"27270110"},{"date":"2025/12/23","value":"27265131"},{"date":"2025/12/22","value":"27243930"},{"date":"2025/12/19","value":"27266021"},{"date":"2025/12/18","value":"27344532"},{"date":"2025/12/17","value":"27528779"},{"date":"2025/12/16","value":"27337687"},{"date":"2025/12/15","value":"27418784"},{"date":"2025/12/12","value":"27379592"},{"date":"2025/12/11","value":"27391215"},{"date":"2025/12/10","value":"27406497"}]
@@ -90,8 +90,21 @@ async function loadData() {
   return baseData;
 }
 
-async function init() {
-  const data = await loadData();
+
+function renderNews(news) {
+  if (!news) return;
+  const title = document.querySelector('[data-news-title]');
+  const meta = document.querySelector('[data-news-meta]');
+  const summary = document.querySelector('[data-news-summary]');
+  const link = document.querySelector('[data-news-link]');
+  const status = document.querySelector('[data-news-status]');
+  if (title && news.title) title.textContent = news.title;
+  if (meta && news.meta) meta.textContent = news.meta;
+  if (summary && news.summary) summary.textContent = news.summary;
+  if (link && news.url) link.href = news.url;
+  if (status && news.status) status.textContent = news.status;
+}\nasync function init() {
+  const data = await loadData();\n  renderNews(data.news);
 
   const investorSeries = (data.investor || []).map((d) => ({
     date: toYmd(d.date),
@@ -110,9 +123,9 @@ async function init() {
     net: computeNet(d.buy, d.sell)
   })).sort(sortByDateAsc);
 
-  buildChart(document.getElementById('investChart'), 'íˆ¬ìžìžì˜ˆíƒê¸ˆ', investorSeries);
-  buildChart(document.getElementById('creditChart'), 'ì‹ ìš©ê±°ëž˜ìœµìž ìž”ê³ ', creditSeries);
-  buildChart(document.getElementById('overseasChart'), 'í•´ì™¸ì£¼ì‹ ìˆœë§¤ìˆ˜', overseasSeries, 'net', 'bar');
+  buildChart(document.getElementById('investChart'), 'ÅõÀÚÀÚ¿¹Å¹±Ý', investorSeries);
+  buildChart(document.getElementById('creditChart'), '½Å¿ë°Å·¡À¶ÀÚ ÀÜ°í', creditSeries);
+  buildChart(document.getElementById('overseasChart'), 'ÇØ¿ÜÁÖ½Ä ¼ø¸Å¼ö', overseasSeries, 'net', 'bar');
 }
 
 init();
@@ -120,8 +133,9 @@ init();
 const newsBtn = document.getElementById('newsUpdateBtn');
 if (newsBtn) {
   newsBtn.addEventListener('click', () => {
-    const query = encodeURIComponent('ìš”êµ¬ë¶ˆì˜ˆê¸ˆ');
+    const query = encodeURIComponent('¿ä±¸ºÒ¿¹±Ý');
     window.open(`https://search.naver.com/search.naver?where=news&query=${query}`, '_blank');
   });
 }
+
 
