@@ -9,6 +9,7 @@
 const numberFmt = new Intl.NumberFormat('ko-KR');
 const DATA_SOURCE = document.body?.dataset.source || 'data.json';
 const SHEET_URL = document.body?.dataset.sheetUrl || '';
+const COUNTER_URL = document.body?.dataset.counterUrl || '';
 const sheetLink = document.getElementById('sheetLink');
 const adminLink = document.querySelector('.admin-link');
 
@@ -152,6 +153,25 @@ if (newsBtn) {
     window.open(`https://search.naver.com/search.naver?where=news&query=${query}`, '_blank');
   });
 }
+
+async function updateVisitCounter() {
+  const counter = document.getElementById('visitCounter');
+  if (!counter) return;
+  if (!COUNTER_URL || COUNTER_URL.includes('YOUR-WORKER')) {
+    counter.textContent = '방문자 수: 설정 필요 (Cloudflare Worker)';
+    return;
+  }
+  try {
+    const res = await fetch(`${COUNTER_URL}/visit`, { method: 'POST' });
+    if (!res.ok) throw new Error('counter failed');
+    const data = await res.json();
+    counter.textContent = `방문자 수: 일일 ${Number(data.daily).toLocaleString('ko-KR')} · 누적 ${Number(data.total).toLocaleString('ko-KR')}`;
+  } catch (err) {
+    counter.textContent = '방문자 수: 집계 오류';
+  }
+}
+
+updateVisitCounter();
 
 
 

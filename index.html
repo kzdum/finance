@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body data-source="https://script.google.com/macros/s/AKfycbxOOHRdyycJ6hcffkXnz21zQFcW1wlgAhUktZ8dPLSzoBwpVlI483up-38lOC1eRzOd/exec" data-sheet-url="https://docs.google.com/spreadsheets/d/124HFW7ADWz8-UqaN9as1RTqS4A1_2jjba-CFZQ8U5NQ/edit?usp=sharing">
+  <body data-source="https://script.google.com/macros/s/AKfycbxOOHRdyycJ6hcffkXnz21zQFcW1wlgAhUktZ8dPLSzoBwpVlI483up-38lOC1eRzOd/exec" data-sheet-url="https://docs.google.com/spreadsheets/d/124HFW7ADWz8-UqaN9as1RTqS4A1_2jjba-CFZQ8U5NQ/edit?usp=sharing" data-counter-url="https://counts.euisanglee.workers.dev">
     <div class="bg-orbit"></div>
     <header class="hero">
       <p class="eyebrow">KOREA MARKET LIQUIDITY</p>
@@ -34,6 +34,36 @@
     </header>
 
     <main class="content">
+      <section class="card">
+        <div class="card-header">
+          <h2>투자자예탁금 (일별)</h2>
+          <span class="pill">KOFIA · 수동 갱신 · 단위: 백만원</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="investChart" height="140"></canvas>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>신용거래융자 잔고 (일별)</h2>
+          <span class="pill">KOFIA · 수동 갱신 · 단위: 백만원</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="creditChart" height="140"></canvas>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>해외주식 순매수 (일별)</h2>
+          <span class="pill">Seibro · 수동 갱신 · 단위: 백만USD</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="overseasChart" height="140"></canvas>
+        </div>
+      </section>
+
       <section class="card">
         <div class="card-header">
           <h2>요구불예금 관련 기사 요약</h2>
@@ -66,40 +96,13 @@
           </a>
         </div>
       </section>
-
-      <section class="card">
-        <div class="card-header">
-          <h2>투자자예탁금 (일별)</h2>
-          <span class="pill">KOFIA · 수동 갱신 · 단위: 백만원</span>
-        </div>
-        <div class="chart-wrap">
-          <canvas id="investChart" height="140"></canvas>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-header">
-          <h2>신용거래융자 잔고 (일별)</h2>
-          <span class="pill">KOFIA · 수동 갱신 · 단위: 백만원</span>
-        </div>
-        <div class="chart-wrap">
-          <canvas id="creditChart" height="140"></canvas>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-header">
-          <h2>해외주식 순매수 (일별)</h2>
-          <span class="pill">Seibro · 수동 갱신 · 단위: 백만USD</span>
-        </div>
-        <div class="chart-wrap">
-          <canvas id="overseasChart" height="140"></canvas>
-        </div>
-      </section>
     </main>
 
     <footer class="footer">
-      <p>Data dashboard · Manual update supported</p>
+      <p>
+        Data dashboard · Manual update supported
+        <span id="visitCounter" class="visit-counter">방문자 수: 일일 0 · 누적 0</span>
+      </p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>

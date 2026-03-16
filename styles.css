@@ -165,6 +165,12 @@ button.ghost {
   font-size: 0.85rem;
 }
 
+.visit-counter {
+  margin-left: 16px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
 @media (max-width: 720px) {
   .hero {
     padding: 48px 6vw 28px;
