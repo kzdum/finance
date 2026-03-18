@@ -30,8 +30,8 @@ function parseNumber(value) {
 
 function toYmd(input) {
   if (!input) return '';
-  if (input.includes('/')) return input;
-  return input.replace(/-/g, '/');
+  const dateOnly = String(input).split('T')[0];
+  return dateOnly.replace(/-/g, '/');
 }
 
 function computeNet(buy, sell) {
