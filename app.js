@@ -30,8 +30,16 @@ function parseNumber(value) {
 
 function toYmd(input) {
   if (!input) return '';
-  const dateOnly = String(input).split('T')[0];
-  return dateOnly.replace(/-/g, '/');
+  const str = String(input);
+  if (str.includes('T')) {
+    // Google Sheets exports dates as UTC; convert to KST (UTC+9) before formatting
+    const kst = new Date(new Date(str).getTime() + 9 * 60 * 60 * 1000);
+    const y = kst.getUTCFullYear();
+    const m = String(kst.getUTCMonth() + 1).padStart(2, '0');
+    const d = String(kst.getUTCDate()).padStart(2, '0');
+    return `${y}/${m}/${d}`;
+  }
+  return str.replace(/-/g, '/');
 }
 
 function computeNet(buy, sell) {
